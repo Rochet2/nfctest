@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>NFC test</title>
+  </head>
+  <body>
+    <button id="readButton">Read</button>
+    <script>
+      readButton.addEventListener("click", async () => {
+        if (!("NDEFReader" in window)) {
+          alert("NFC not supported. NFC web API is supported only on Android and only on some browsers. See https://developer.mozilla.org/en-US/docs/Web/API/Web_NFC_API#browser_compatibility");
+        } else {
+          const ndef = new NDEFReader();
+          ndef.onreadingerror = (event) => {
+            console.log("Reading failed", event);
+          };
+          ndef.onreading = (event) => {
+            console.log("Reading succeeded", event);
+          };
+          ndef.scan().catch((error) => {
+            console.log(`Error! Scan failed to start: ${error}.`);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
